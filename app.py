@@ -5,6 +5,11 @@ from models import Usuario, Aposta
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from threading import Thread
+from telegram.ext import Application
+
+
+
 
 
 
@@ -126,6 +131,12 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
+def iniciar_bot():
+    from bot import telegram_app
+    telegram_app.run_polling()
+
+Thread(target=iniciar_bot).start()
 
 if __name__ == '__main__':
     
