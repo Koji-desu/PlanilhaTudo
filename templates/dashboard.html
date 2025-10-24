@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Apostas Inteligentes</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #121212; color: #f1f1f1; }
+    .card { background-color: #1f1f1f; border-radius: 10px; }
+    .card-title { font-size: 1.2rem; color: #f1f1f1;}
+    .table-dark th, .table-dark td { color: #f1f1f1; }
+    .card-values{color: #f1f1f1}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="/logout" class="btn btn-outline-light">Sair</a>
+    </div>
+  </nav>
+
+<div class="container mt-4">
+  <form method="POST" action="/atualizar_banca" class="row g-3 align-items-center">
+    <div class="col-auto">
+      <label for="banca" class="col-form-label text-light">💼 Sua banca atual:</label>
+    </div>
+    <div class="col-auto">
+      <input type="number" step="0.01" name="banca" id="banca" class="form-control" value="{{ banca_atual }}" required>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-custom card-values">Atualizar</button>
+    </div>
+  </form>
+</div>
+
+
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">📊 Estatísticas da Banca</h2>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="card border-success p-3"><h5 class="card-title">💰 Lucro Bruto</h5><p class="card-values">R$ {{ lucro_bruto }}</p></div></div>
+      <div class="col-md-4"><div class="card border-info p-3"><h5 class="card-title">📈 Lucro % sobre banca</h5><p class="card-values">{{ lucro_percentual }}%</p></div></div>
+      <div class="col-md-4"><div class="card border-warning p-3"><h5 class="card-title">🔁 ROI</h5><p class="card-values">{{ roi }}%</p></div></div>
+      <div class="col-md-4"><div class="card border-primary p-3"><h5 class="card-title">⚙️ Média de Odd</h5><p class="card-values">{{ media_odd }}</p></div></div>
+      <div class="col-md-4"><div class="card border-secondary p-3"><h5 class="card-title">📅 Dias de trabalho</h5><p class="card-values">{{ dias_trabalho }}</p></div></div>
+      <div class="col-md-4"><div class="card border-danger p-3"><h5 class="card-title">✅ Ganhos</h5><p class="card-values">{{ qtd_ganhos }}</p><h5 class="card-title mt-3">❌ Perdas</h5><p class="card-values">{{ qtd_perdas }}</p></div></div>
+    </div>
+
+    <div class="container mt-4">
+  <form method="GET" action="/dashboard" class="row g-3 align-items-center">
+    <div class="col-auto">
+      <label for="data_inicio" class="col-form-label text-light">📅 De:</label>
+      <input type="date" name="data_inicio" id="data_inicio" class="form-control" value="{{ data_inicio }}">
+    </div>
+    <div class="col-auto">
+      <label for="data_fim" class="col-form-label text-light">📅 Até:</label>
+      <input type="date" name="data_fim" id="data_fim" class="form-control" value="{{ data_fim }}">
+    </div>
+    <div class="col-auto mt-4">
+      <button type="submit" class="btn btn-outline-light">Filtrar</button>
+    </div>
+  </form>
+</div>
+
+
+    <h3 class="text-center mt-5">📋 Minhas Apostas</h3>
+    <table class="table table-dark table-striped mt-3">
+      <thead>
+        <tr><th>Data</th><th>Stake</th><th>Odd</th><th>Retorno</th><th>Resultado</th></tr>
+      </thead>
+      <tbody>
+        {% for aposta in apostas %}
+        <tr>
+          <td>{{ aposta.data }}</td>
+          <td>{{ aposta.valor_aposta }}</td>
+          <td>{{ aposta.odd }}</td>
+          <td>{{ aposta.retorno }}</td>
+          <td>{{ aposta.resultado }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
+
+{% endblock %}
