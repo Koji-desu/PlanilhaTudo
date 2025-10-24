@@ -13,6 +13,7 @@ from app import app  # certifique-se de que o nome do arquivo é mesmo app.py
 
 # Comando /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print("📩 Recebi /start do usuário")
     await update.message.reply_text("Bot ativo! Envie uma imagem da aposta para extrair os dados.")
 
 # Processa imagem enviada
