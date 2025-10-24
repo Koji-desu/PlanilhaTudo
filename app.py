@@ -159,7 +159,7 @@ def registrar_aposta():
 
     try:
         nova_aposta = Aposta(
-            data=dados["data"],
+            data=datetime.strptime(dados["data"], "%Y-%m-%d").date(),
             valor_aposta=dados["valor_aposta"],
             retorno=dados["retorno"],
             odd=dados["odd"],
