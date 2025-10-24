@@ -134,9 +134,7 @@ def logout():
 
 from threading import Thread
 import asyncio
-
-import asyncio
-from threading import Thread
+import nest_asyncio
 
 def iniciar_bot():
     print("🔄 Iniciando bot Telegram...")
