@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from extensoes import db, login_manager
 from models import Usuario, Aposta
 from flask_login import login_user, logout_user, login_required, current_user
@@ -131,25 +131,21 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+@app.route("/api/usuario", methods=["GET"])
+def consultar_usuario():
+    telefone = request.args.get("tel")
+    if not telefone:
+        return jsonify({"erro": "Telefone não informado"}), 400
 
-from threading import Thread
-import asyncio
-import nest_asyncio
-
-def iniciar_bot():
-    print("🔄 Iniciando bot Telegram...")
-
-    async def rodar_bot():
-        from bot import telegram_app
-        await telegram_app.run_polling()
-
-    try:
-        asyncio.run(rodar_bot())
-    except Exception as e:
-        print(f"❌ Erro ao iniciar bot: {e}")
-
-
-Thread(target=iniciar_bot).start()
+    usuario = Usuario.query.filter_by(tel=telefone).first()
+    if usuario:
+        return jsonify({
+            "id": usuario.id,
+            "nome": usuario.nome,
+            "telefone": usuario.tel
+        })
+    else:
+        return jsonify({"erro": "Usuário não encontrado"}), 404
 
 if __name__ == '__main__':
 
