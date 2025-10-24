@@ -137,8 +137,9 @@ def iniciar_bot():
     telegram_app.run_polling()
 
 
+Thread(target=iniciar_bot).start()
 
 if __name__ == '__main__':
-    Thread(target=iniciar_bot).start()
+
     app.run()
     
