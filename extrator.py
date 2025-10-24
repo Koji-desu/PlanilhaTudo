@@ -1,7 +1,13 @@
 import re
 import pytesseract
 from PIL import Image
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+import shutil
+
+pytesseract.pytesseract.tesseract_cmd = shutil.which("tesseract")
+
+
+
 
 def extrair_data(texto):
     padrao = r"(\d{2}/\d{2}/\d{4})"

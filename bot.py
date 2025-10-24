@@ -121,4 +121,10 @@ telegram_app.add_handler(CommandHandler("cancelar", cancelar))
 telegram_app.add_handler(CommandHandler("telefone", solicitar_telefone))
 telegram_app.add_handler(MessageHandler(filters.CONTACT, receber_telefone))
 telegram_app.add_handler(MessageHandler(filters.PHOTO, processar_imagem))
-telegram_app.run_polling()
+if __name__ == "__main__":
+    try:
+        telegram_app.run_polling()
+    except Exception as e:
+        print(f"Erro ao iniciar o bot: {e}")
+
+
