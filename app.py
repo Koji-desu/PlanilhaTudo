@@ -129,5 +129,5 @@ def logout():
 
 if __name__ == '__main__':
     
-    app.run(debug=True)
-    print(current_user.id)
+    app.run()
+    
