@@ -2,8 +2,6 @@ from datetime import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import extrator
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 import os
 import string
 from extensoes import db
@@ -12,20 +10,6 @@ from telegram import ReplyKeyboardMarkup, KeyboardButton
 from app import app  # certifique-se de que o nome do arquivo é mesmo app.py
 
 
-# Autenticação Google Sheets
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credenciais.json", scope)
-client = gspread.authorize(creds)
-planilha = client.open("PLANILHA GANHOSEPERDAS")
-aba = planilha.worksheet("Out")
-
-# Função para inserir dados a partir da coluna J
-def append_em_coluna(aba, coluna_inicial, valores):
-    colunas = {letra: idx + 1 for idx, letra in enumerate(string.ascii_uppercase)}
-    col_inicio = colunas.get(coluna_inicial.upper(), 1)
-    ultima_linha = len(aba.col_values(col_inicio)) + 1
-    for i, valor in enumerate(valores):
-        aba.update_cell(ultima_linha, col_inicio + i, valor)
 
 # Comando /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -76,7 +60,6 @@ async def confirmar(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("⚠️ Você precisa verificar seu telefone antes de usar este comando. Use /telefone.")
         return
     if dados:
-        append_em_coluna(aba, 'J', dados)
         data_str = dados[0]
         data_formatada = datetime.strptime(data_str, "%d/%m/%Y").date()
         nova_aposta = Aposta(
