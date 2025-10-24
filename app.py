@@ -135,14 +135,20 @@ def logout():
 from threading import Thread
 import asyncio
 
+import asyncio
+from threading import Thread
+
 def iniciar_bot():
     print("🔄 Iniciando bot Telegram...")
-    try:
+
+    async def rodar_bot():
         from bot import telegram_app
-        asyncio.run(telegram_app.run_polling())
+        await telegram_app.run_polling()
+
+    try:
+        asyncio.run(rodar_bot())
     except Exception as e:
         print(f"❌ Erro ao iniciar bot: {e}")
-
 
 
 Thread(target=iniciar_bot).start()
