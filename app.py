@@ -146,6 +146,32 @@ def consultar_usuario():
         })
     else:
         return jsonify({"erro": "Usuário não encontrado"}), 404
+    
+    
+@app.route("/api/aposta", methods=["POST"])
+def registrar_aposta():
+    dados = request.get_json()
+
+    # Validação básica
+    campos_obrigatorios = ["data", "valor_aposta", "retorno", "odd", "resultado", "usuario_id"]
+    if not all(campo in dados for campo in campos_obrigatorios):
+        return jsonify({"erro": "Campos obrigatórios ausentes"}), 400
+
+    try:
+        nova_aposta = Aposta(
+            data=dados["data"],
+            valor_aposta=dados["valor_aposta"],
+            retorno=dados["retorno"],
+            odd=dados["odd"],
+            resultado=dados["resultado"],
+            usuario_id=dados["usuario_id"]
+        )
+        db.session.add(nova_aposta)
+        db.session.commit()
+        return jsonify({"mensagem": "Aposta registrada com sucesso"}), 201
+    except Exception as e:
+        return jsonify({"erro": str(e)}), 500
+
 
 if __name__ == '__main__':
 
