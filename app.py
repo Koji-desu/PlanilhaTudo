@@ -133,8 +133,13 @@ def logout():
 
 
 def iniciar_bot():
-    from bot import telegram_app
-    telegram_app.run_polling()
+    print("🔄 Iniciando bot Telegram...")
+    try:
+        from bot import telegram_app
+        telegram_app.run_polling()
+    except Exception as e:
+        print(f"❌ Erro ao iniciar bot: {e}")
+
 
 
 Thread(target=iniciar_bot).start()
