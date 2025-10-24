@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
@@ -123,3 +124,16 @@ telegram_app.add_handler(CommandHandler("telefone", solicitar_telefone))
 telegram_app.add_handler(MessageHandler(filters.CONTACT, receber_telefone))
 telegram_app.add_handler(MessageHandler(filters.PHOTO, processar_imagem))
 
+def iniciar_bot():
+    print("🔄 Iniciando bot Telegram...")
+
+    async def rodar_bot():
+        await telegram_app.run_polling()
+
+    try:
+        asyncio.run(rodar_bot())
+    except Exception as e:
+        print(f"❌ Erro ao iniciar bot: {e}")
+
+if __name__ == "__main__":
+    iniciar_bot()
